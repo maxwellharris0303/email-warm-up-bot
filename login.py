@@ -1,6 +1,7 @@
 from selenium_driverless.sync import webdriver
 from selenium_driverless.types.by import By
 from time import sleep
+import newletter_verification
 
 EMAIL_ADDRESS = "pkmnbvcxsryjhcdf876@gmail.com"
 PASSWORD = "9fdNhFEeICw9ke7i"
@@ -47,6 +48,27 @@ try:
     next_button.click()
 except:
     pass
+sleep(5)
+driver.get("https://mail.google.com/mail/u/0/#search/action+required+%3A+confirm+your+axios+subscription", wait_load=True)
+sleep(5)
+spans = driver.find_elements(By.CSS_SELECTOR, "span[class=\"il\"]")
+print(len(spans))
+for span in spans:
+    if "Action" in span.text:
+        span.click()
+        break
+sleep(5)
+
+verify_email_link = ""
+a_links = driver.find_elements(By.TAG_NAME, "a")
+print(len(a_links))
+for a_link in a_links:
+    if "verify email" in a_link.text.lower():
+        verify_email_link = driver.execute_script("return arguments[0].getAttribute('href');", a_link)
+        print(verify_email_link)
+        break
+
+newletter_verification.verification(verifylink=verify_email_link)
 
 driver.get("https://mail.google.com/mail/u/0/#settings/accounts", wait_load=True)
 sleep(3)
@@ -63,3 +85,25 @@ for window in windows:
         print("Add another email address you own")
         driver.switch_to.window(window)
         print(driver.current_url)
+
+NAME = "zajan"
+ANOTHER_EMAIL_ADDRESS = "oscarrogers303@gmail.com"
+
+name_input = driver.find_element(By.CSS_SELECTOR, "input[aria-labelledby=\"nameLabel\"]")
+name_input.clear()
+name_input.write(NAME)
+
+another_email_input = driver.find_element(By.CSS_SELECTOR, "input[id=\"focus\"]")
+another_email_input.write(ANOTHER_EMAIL_ADDRESS)
+
+next_step_button = driver.find_element(By.CSS_SELECTOR, "input[type=\"submit\"]")
+next_step_button.click()
+sleep(3)
+while True:
+    try:
+        send_verification_button = driver.find_element(By.CSS_SELECTOR, "input[value=\"Send Verification\"]")
+        send_verification_button.click()
+        break
+    except:
+        sleep(3)
+        pass
