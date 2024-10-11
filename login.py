@@ -4,7 +4,7 @@ from time import sleep
 import newletter_verification
 
 EMAIL_ADDRESS = "pkmnbvcxsryjhcdf876@gmail.com"
-PASSWORD = "9fdNhFEeICw9ke7i"
+PASSWORD = "DFJSDFJ#$*#(ksdjf234JDFHDF)"
 RECOVERY_EMAIL_ADDRESS = "pkmnbvcxsryjhcdf87617@outlook.com"
 
 ALIAS = "zajan"
@@ -113,6 +113,10 @@ while True:
         pass
 
 sleep(5)
+
+driver.find_element(By.CSS_SELECTOR, "a[id=\"cancel\"]").click()
+driver.switch_to.window(driver.window_handles[0])
+driver.refresh()
 
 another_driver = webdriver.Chrome()
 another_driver.maximize_window()
